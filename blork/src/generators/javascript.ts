@@ -46,8 +46,8 @@ forBlock['source'] = function(
       config = {
         dataSource: dataSource,
         updateFrequency: updateFrequency,
-        contract: block.getFieldValue('CONTRACT'),
-        providerUrl: block.getFieldValue('PROVIDER_URL'),
+        contractAddress: block.getFieldValue('CONTRACT'),
+        httpProviderUrl: block.getFieldValue('PROVIDER_URL'),
         baseTokenIndex: Number(block.getFieldValue('BASE_INDEX')),
         baseTokenDecimals: Number(block.getFieldValue('BASE_DECIMALS')),
         quoteTokenIndex: Number(block.getFieldValue('QUOTE_INDEX')),
@@ -58,8 +58,8 @@ forBlock['source'] = function(
       config = {
         dataSource: dataSource,
         updateFrequency: updateFrequency,
-        contract: block.getFieldValue('CONTRACT'),
-        providerUrl: block.getFieldValue('PROVIDER_URL'),
+        contractAddress: block.getFieldValue('CONTRACT'),
+        httpProviderUrl: block.getFieldValue('PROVIDER_URL'),
       };
       break;
     case 'random':

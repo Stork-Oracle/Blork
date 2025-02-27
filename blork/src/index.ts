@@ -125,17 +125,25 @@ export function initWorkspace(ws: Blockly.WorkspaceSvg) {
   mainBlock.setDeletable(false);
   mainBlock.moveBy(50, 50);
 
-  const sourceBlock = createBlock(ws, 'source', { 'ID': 'DUMMY_SOURCE' });
+  const sourceBlock = createBlock(ws, 'source', { 
+    'ID': 'WETHUSDT',
+    'DATA_SOURCE': 'uniswapv2',
+    'PROVIDER_URL': 'https://ethereum-rpc.publicnode.com',
+    'CONTRACT': '0x0d4a11d5eeaac28ec3f61d100daf4d40471f1852',
+    'QUOTE_DECIMALS': 6
+  });
   const sourceBlockB = createBlock(ws, 'source', {
-    'ID': 'RANDOM_SOURCE',
-    'DATA_SOURCE': 'random'
+    'ID': 'SOL_USDC',
+    'DATA_SOURCE': 'raydiumclmm',
+    'PROVIDER_URL': 'https://solana-rpc.publicnode.com',
+    'CONTRACT': '8sLbNZoA1cfnvMJLPfp98ZLAnFSYCFApfJKMbiXNLwxj',
   });
 
   connectBlocks(mainBlock, sourceBlock, 'input', 'SOURCES');
   connectBlocks(sourceBlock, sourceBlockB, 'next');
 
-  const transformationBlockA = createBlock(ws, 'transformation');
-  const transformationBlockB = createBlock(ws, 'transformation');
+  const transformationBlockA = createBlock(ws, 'transformation', { 'ID': 'SOL_WETH_MEDIAN' });
+  const transformationBlockB = createBlock(ws, 'transformation', { 'ID': 'USDC_SOL' });
 
   connectBlocks(mainBlock, transformationBlockA, 'input', 'TRANSFORMATIONS');
   connectBlocks(transformationBlockA, transformationBlockB, 'next');
@@ -148,18 +156,18 @@ export function initWorkspace(ws: Blockly.WorkspaceSvg) {
   connectBlocks(aggregationBlock, valueBlock, 'input', 'VALUES');
   connectBlocks(valueBlock, valueBlockB, 'next');
 
-  const numberBlock = createBlock(ws, 'constant');
-  const variableBlock = createBlock(ws, 'variable');
-  connectBlocks(valueBlock, numberBlock, 'input', 'INPUT');
-  connectBlocks(valueBlockB, variableBlock, 'input', 'INPUT');
+  const variableBlockA = createBlock(ws, 'variable', { 'NAME': 'SOL_USDC' });
+  const variableBlockB = createBlock(ws, 'variable', { 'NAME': 'WETHUSDT' });
+  connectBlocks(valueBlock, variableBlockA, 'input', 'INPUT');
+  connectBlocks(valueBlockB, variableBlockB, 'input', 'INPUT');
 
-  const formulaBlock = createBlock(ws, 'simple_formula');
+  const formulaBlock = createBlock(ws, 'simple_formula', { 'OPERATION': '÷' });
   connectBlocks(transformationBlockB, formulaBlock, 'input', 'VALUES');
 
-  const numberBlockB = createBlock(ws, 'constant');
-  const variableBlockB = createBlock(ws, 'variable');
+  const numberBlockB = createBlock(ws, 'constant', { 'INPUT': 1 });
+  const variableBlockC = createBlock(ws, 'variable', { 'NAME': 'SOL_USDC' });
   connectBlocks(formulaBlock, numberBlockB, 'input', 'VALUE_A');
-  connectBlocks(formulaBlock, variableBlockB, 'input', 'VALUE_B');
+  connectBlocks(formulaBlock, variableBlockC, 'input', 'VALUE_B');
 
 
 

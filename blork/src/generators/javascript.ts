@@ -44,20 +44,28 @@ forBlock['source'] = function(
   switch(dataSource) {
     case 'uniswapv2':
       config = {
+        dataSource: dataSource,
+        updateFrequency: updateFrequency,
         contract: block.getFieldValue('CONTRACT'),
         providerUrl: block.getFieldValue('PROVIDER_URL'),
         baseTokenIndex: Number(block.getFieldValue('BASE_INDEX')),
-        quoteTokenIndex: Number(block.getFieldValue('QUOTE_INDEX'))
+        baseTokenDecimals: Number(block.getFieldValue('BASE_DECIMALS')),
+        quoteTokenIndex: Number(block.getFieldValue('QUOTE_INDEX')),
+        quoteTokenDecimals: Number(block.getFieldValue('QUOTE_DECIMALS'))
       };
       break;
     case 'raydiumclmm':
       config = {
+        dataSource: dataSource,
+        updateFrequency: updateFrequency,
         contract: block.getFieldValue('CONTRACT'),
         providerUrl: block.getFieldValue('PROVIDER_URL'),
       };
       break;
     case 'random':
       config = {
+        dataSource: dataSource,
+        updateFrequency: updateFrequency,
         minValue: Number(block.getFieldValue('MIN_VALUE')),
         maxValue: Number(block.getFieldValue('MAX_VALUE'))
       };
@@ -66,8 +74,6 @@ forBlock['source'] = function(
 
   return `{
     "id": "${id}",
-    "type": "${dataSource}",
-    "updateFrequency": "${updateFrequency}",
     "config": ${JSON.stringify(config)}
   },`;
 };
@@ -132,7 +138,11 @@ forBlock['simple_formula'] = function(
   const operation = block.getFieldValue('OPERATION');
   const valueBBlock = block.getInputTargetBlock('VALUE_B');
   const bVal = valueBBlock ? generator.blockToCode(valueBBlock) : 'none';
-  return `(${aVal} ${operation} ${bVal})`;
+
+  var mappedOperation = operation === '÷' ? '/' : operation;
+  mappedOperation = mappedOperation === '×' ? '*' : mappedOperation;
+
+  return `(${aVal} ${mappedOperation} ${bVal})`;
 };
 
 // Add generator for variable block

@@ -229,11 +229,16 @@ Blockly.Blocks['source'] = {
         this.appendDummyInput('CONFIG_PROVIDER')
           .appendField('Provider URL:')
           .appendField(new Blockly.FieldTextInput('https://'), 'PROVIDER_URL');
-        this.appendDummyInput('CONFIG_INDICES')
+        this.appendDummyInput('BASE_TOKEN')
           .appendField('Base Token Index:')
           .appendField(new Blockly.FieldNumber(0), 'BASE_INDEX')
+          .appendField('Base Token Decimals:')
+          .appendField(new Blockly.FieldNumber(18), 'BASE_DECIMALS')
+        this.appendDummyInput('QUOTE_TOKEN')
           .appendField('Quote Token Index:')
-          .appendField(new Blockly.FieldNumber(1), 'QUOTE_INDEX');
+          .appendField(new Blockly.FieldNumber(1), 'QUOTE_INDEX')
+          .appendField('Quote Token Decimals:')
+          .appendField(new Blockly.FieldNumber(18), 'QUOTE_DECIMALS');
         break;
       
       case 'raydiumclmm':
